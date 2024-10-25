@@ -3,36 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Juegos Flash</title>
+    <title>Juega a Papas Donutería</title>
     <!-- Incluye el script de Ruffle -->
     <script src="https://ruffle.js.org/ruffle.js"></script>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
         }
         #ruffle-container {
             width: 800px; /* Ancho del contenedor del juego */
             height: 600px; /* Alto del contenedor del juego */
             border: 1px solid #ccc; /* Borde del contenedor */
             background-color: #fff; /* Fondo del contenedor */
+            position: relative;
+            overflow: hidden;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #666;
+            display: none; /* Oculto inicialmente */
         }
     </style>
 </head>
 <body>
-    <div id="ruffle-container"></div>
+    <h1>Juega a Papas Donutería</h1>
+    <div id="ruffle-container">
+        <div id="loading">Cargando el juego...</div>
+    </div>
     <script>
         // Inicializar Ruffle
         const ruffle = window.RufflePlayer.newest();
         const player = ruffle.createPlayer();
         document.getElementById("ruffle-container").appendChild(player);
-
+        
+        // Mostrar mensaje de carga
+        const loadingMessage = document.getElementById("loading");
+        loadingMessage.style.display = "block";
+        
         // Cargar el archivo SWF
-        player.load("papasdonuteria_102.swf"); // Asegúrate de que este archivo esté en la misma carpeta que index.html
+        player.load("papasdonuteria_102.swf").then(() => {
+            loadingMessage.style.display = "none"; // Ocultar mensaje de carga
+        }).catch(err => {
+            loadingMessage.innerText = "Error al cargar el juego: " + err.message;
+            console.error("Error al cargar el SWF:", err);
+        });
     </script>
 </body>
 </html>
+
